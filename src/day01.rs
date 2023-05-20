@@ -4,7 +4,7 @@ use std::{
     path::PathBuf,
 };
 
-/// Exercise 1
+/// Puzzle 1
 pub(super) fn get_total_calories_for_elf_with_most_calories(
     input_file: &str,
 ) -> Result<u32, String> {
