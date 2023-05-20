@@ -5,7 +5,7 @@ use std::{
 };
 
 /// Exercise 1
-pub(crate) fn get_total_calories_for_elf_with_most_calories(
+pub(super) fn get_total_calories_for_elf_with_most_calories(
     input_file: &str,
 ) -> Result<u32, String> {
     let input_path: PathBuf = [env!("CARGO_MANIFEST_DIR"), "input", input_file]
