@@ -28,6 +28,10 @@ fn get_total_calories_for_elves_with_most_calories(
         calories_for_current_elf = 0;
     }
 
+    if calories_for_current_elf > 0 {
+        calories_for_all_elves.push(calories_for_current_elf);
+    }
+
     calories_for_all_elves.sort_by(|x, y| y.cmp(x));
 
     Ok(calories_for_all_elves.iter().take(limit).sum())
@@ -40,15 +44,31 @@ pub(super) fn get_total_calories_for_elf_with_most_calories(
     get_total_calories_for_elves_with_most_calories(input_file, 1)
 }
 
+/// Puzzle 2
+pub(super) fn get_total_calories_for_three_elves_with_most_calories(
+    input_file: &str,
+) -> Result<u32, Box<dyn Error>> {
+    get_total_calories_for_elves_with_most_calories(input_file, 3)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
-    fn test_using_example_input() {
+    fn get_total_calories_for_elf_with_most_calories_using_example_input() {
         assert_eq!(
             Ok(24000),
             get_total_calories_for_elf_with_most_calories("day01-example-input.txt")
+                .map_err(|e| format!("{:?}", e))
+        );
+    }
+
+    #[test]
+    fn get_total_calories_for_three_elves_with_most_calories_using_example_input() {
+        assert_eq!(
+            Ok(45000),
+            get_total_calories_for_three_elves_with_most_calories("day01-example-input.txt")
                 .map_err(|e| format!("{:?}", e))
         );
     }
