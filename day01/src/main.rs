@@ -16,7 +16,7 @@ fn get_total_calories_for_elf_with_most_calories(input_file: &str) -> Result<u32
         let calories_str: &str = &line?;
         if calories_str.is_empty() {
             if calories_for_current_elf > max_calories {
-                max_calories += calories_for_current_elf;
+                max_calories = calories_for_current_elf;
             }
             calories_for_current_elf = 0;
         } else {
