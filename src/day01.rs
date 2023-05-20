@@ -1,4 +1,5 @@
 use std::{
+    error::Error,
     fs::File,
     io::{BufRead, BufReader},
     path::PathBuf,
@@ -7,7 +8,7 @@ use std::{
 /// Puzzle 1
 pub(super) fn get_total_calories_for_elf_with_most_calories(
     input_file: &str,
-) -> Result<u32, Box<dyn std::error::Error>> {
+) -> Result<u32, Box<dyn Error>> {
     let input_path: PathBuf = [env!("CARGO_MANIFEST_DIR"), "input", input_file]
         .iter()
         .collect();
