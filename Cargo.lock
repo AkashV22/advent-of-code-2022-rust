@@ -3,5 +3,5 @@
 version = 3
 
 [[package]]
-name = "day01"
+name = "advent-of-code-2022-rust"
 version = "0.1.0"

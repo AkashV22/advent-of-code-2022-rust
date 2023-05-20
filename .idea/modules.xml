@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/advent-of-code-2022-rust.iml" filepath="$PROJECT_DIR$/advent-of-code-2022-rust.iml" />
-      <module fileurl="file://$PROJECT_DIR$/day01/day01.iml" filepath="$PROJECT_DIR$/day01/day01.iml" />
     </modules>
   </component>
 </project>
