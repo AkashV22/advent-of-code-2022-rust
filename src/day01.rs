@@ -5,9 +5,9 @@ use std::{
     path::PathBuf,
 };
 
-/// Puzzle 1
-pub(super) fn get_total_calories_for_elf_with_most_calories(
+fn get_total_calories_for_elves_with_most_calories(
     input_file: &str,
+    limit: usize,
 ) -> Result<u32, Box<dyn Error>> {
     let input_path: PathBuf = [env!("CARGO_MANIFEST_DIR"), "input", input_file]
         .iter()
@@ -16,21 +16,28 @@ pub(super) fn get_total_calories_for_elf_with_most_calories(
     let file = File::open(input_path)?;
     let buf = BufReader::new(file);
 
-    let mut max_calories: u32 = 0;
     let mut calories_for_current_elf: u32 = 0;
+    let mut calories_for_all_elves: Vec<u32> = vec![];
     for line in buf.lines() {
         let calories_str: &str = &line?;
         if !calories_str.is_empty() {
             calories_for_current_elf += calories_str.parse::<u32>()?;
             continue;
         }
-        if calories_for_current_elf > max_calories {
-            max_calories = calories_for_current_elf;
-        }
+        calories_for_all_elves.push(calories_for_current_elf);
         calories_for_current_elf = 0;
     }
 
-    Ok(max_calories)
+    calories_for_all_elves.sort_by(|x, y| y.cmp(x));
+
+    Ok(calories_for_all_elves.iter().take(limit).sum())
+}
+
+/// Puzzle 1
+pub(super) fn get_total_calories_for_elf_with_most_calories(
+    input_file: &str,
+) -> Result<u32, Box<dyn Error>> {
+    get_total_calories_for_elves_with_most_calories(input_file, 1)
 }
 
 #[cfg(test)]
