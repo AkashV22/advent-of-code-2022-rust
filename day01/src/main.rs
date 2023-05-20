@@ -4,8 +4,8 @@ use std::{
     path::PathBuf,
 };
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let input_path: PathBuf = [env!("CARGO_MANIFEST_DIR"), "input.txt"].iter().collect();
+fn get_total_calories_for_elf_with_most_calories(input_file: &str) -> Result<u32, Box<dyn std::error::Error>> {
+    let input_path: PathBuf = [env!("CARGO_MANIFEST_DIR"), input_file].iter().collect();
 
     let file = File::open(input_path)?;
     let buf = BufReader::new(file);
@@ -24,7 +24,23 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     }
 
+    Ok(max_calories)
+}
+
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let max_calories: u32 = get_total_calories_for_elf_with_most_calories("input.txt")?;
+
     println!("The elf carrying the most calories is carrying {} calories in total!", max_calories);
 
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_using_example_input() {
+        assert_eq!(Ok(24000), get_total_calories_for_elf_with_most_calories("example-input.txt").map_err(|e| format!("{:?}", e)));
+    }
 }
