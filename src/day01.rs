@@ -7,22 +7,20 @@ use std::{
 /// Puzzle 1
 pub(super) fn get_total_calories_for_elf_with_most_calories(
     input_file: &str,
-) -> Result<u32, String> {
+) -> Result<u32, Box<dyn std::error::Error>> {
     let input_path: PathBuf = [env!("CARGO_MANIFEST_DIR"), "input", input_file]
         .iter()
         .collect();
 
-    let file = File::open(input_path).map_err(|e| format!("{:?}", e))?;
+    let file = File::open(input_path)?;
     let buf = BufReader::new(file);
 
     let mut max_calories: u32 = 0;
     let mut calories_for_current_elf: u32 = 0;
     for line in buf.lines() {
-        let calories_str: &str = &line.map_err(|e| format!("{:?}", e))?;
+        let calories_str: &str = &line?;
         if !calories_str.is_empty() {
-            calories_for_current_elf += calories_str
-                .parse::<u32>()
-                .map_err(|e| format!("{:?}", e))?;
+            calories_for_current_elf += calories_str.parse::<u32>()?;
             continue;
         }
         if calories_for_current_elf > max_calories {
@@ -43,6 +41,7 @@ mod tests {
         assert_eq!(
             Ok(24000),
             get_total_calories_for_elf_with_most_calories("day01-example-input.txt")
+                .map_err(|e| format!("{:?}", e))
         );
     }
 }
