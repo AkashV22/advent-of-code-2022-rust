@@ -28,16 +28,14 @@ enum Move {
 }
 
 impl Move {
-    fn score(&self) -> u32 {
-        match self {
+    fn score_against(&self, opponent: &Move) -> u32 {
+        let base_score: u32 = match self {
             Move::Rock => 1,
             Move::Paper => 2,
             Move::Scissors => 3,
-        }
-    }
+        };
 
-    fn result_against(&self, opponent: &Move) -> GameResult {
-        match (self, opponent) {
+        let result: GameResult = match (self, opponent) {
             (Move::Rock, Move::Rock) => GameResult::Draw,
             (Move::Rock, Move::Paper) => GameResult::Lose,
             (Move::Rock, Move::Scissors) => GameResult::Win,
@@ -47,7 +45,9 @@ impl Move {
             (Move::Scissors, Move::Rock) => GameResult::Lose,
             (Move::Scissors, Move::Paper) => GameResult::Win,
             (Move::Scissors, Move::Scissors) => GameResult::Draw,
-        }
+        };
+
+        base_score + result.score()
     }
 }
 
@@ -75,7 +75,7 @@ fn calculate_score(game_str: &str) -> u32 {
     let opponent_move: Option<Move> = game_chars.first().and_then(opponent_key_to_move);
 
     match (&player_move, &opponent_move) {
-        (Some(player), Some(opponent)) => player.score() + player.result_against(opponent).score(),
+        (Some(player), Some(opponent)) => player.score_against(opponent),
         _ => 0,
     }
 }
