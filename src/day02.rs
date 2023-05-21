@@ -14,9 +14,9 @@ enum GameResult {
 impl GameResult {
     fn score(&self) -> u32 {
         match self {
-            GameResult::Win => 6,
-            GameResult::Lose => 0,
-            GameResult::Draw => 3,
+            Self::Win => 6,
+            Self::Lose => 0,
+            Self::Draw => 3,
         }
     }
 }
@@ -30,21 +30,21 @@ enum Move {
 impl Move {
     fn score_against(&self, opponent: &Move) -> u32 {
         let base_score: u32 = match self {
-            Move::Rock => 1,
-            Move::Paper => 2,
-            Move::Scissors => 3,
+            Self::Rock => 1,
+            Self::Paper => 2,
+            Self::Scissors => 3,
         };
 
         let result: GameResult = match (self, opponent) {
-            (Move::Rock, Move::Rock) => GameResult::Draw,
-            (Move::Rock, Move::Paper) => GameResult::Lose,
-            (Move::Rock, Move::Scissors) => GameResult::Win,
-            (Move::Paper, Move::Rock) => GameResult::Win,
-            (Move::Paper, Move::Paper) => GameResult::Draw,
-            (Move::Paper, Move::Scissors) => GameResult::Lose,
-            (Move::Scissors, Move::Rock) => GameResult::Lose,
-            (Move::Scissors, Move::Paper) => GameResult::Win,
-            (Move::Scissors, Move::Scissors) => GameResult::Draw,
+            (Self::Rock, Self::Rock) => GameResult::Draw,
+            (Self::Rock, Self::Paper) => GameResult::Lose,
+            (Self::Rock, Self::Scissors) => GameResult::Win,
+            (Self::Paper, Self::Rock) => GameResult::Win,
+            (Self::Paper, Self::Paper) => GameResult::Draw,
+            (Self::Paper, Self::Scissors) => GameResult::Lose,
+            (Self::Scissors, Self::Rock) => GameResult::Lose,
+            (Self::Scissors, Self::Paper) => GameResult::Win,
+            (Self::Scissors, Self::Scissors) => GameResult::Draw,
         };
 
         base_score + result.score()
