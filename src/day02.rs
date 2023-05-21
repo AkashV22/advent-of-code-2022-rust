@@ -74,12 +74,9 @@ fn calculate_score(game_str: &str) -> u32 {
     let player_move: Option<Move> = game_chars.last().and_then(player_key_to_move);
     let opponent_move: Option<Move> = game_chars.first().and_then(opponent_key_to_move);
 
-    if let (Some(player), Some(opponent)) = (&player_move, &opponent_move) {
-        let result: GameResult = player.result_against(opponent);
-
-        player.score() + result.score()
-    } else {
-        0
+    match (&player_move, &opponent_move) {
+        (Some(player), Some(opponent)) => player.score() + player.result_against(opponent).score(),
+        _ => 0,
     }
 }
 
