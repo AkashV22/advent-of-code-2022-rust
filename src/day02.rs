@@ -69,14 +69,16 @@ fn opponent_key_to_move(key: &char) -> Option<Move> {
     }
 }
 
-fn calculate_score(game_str: &str) -> u32 {
-    let game_chars: Vec<char> = game_str.chars().collect();
-    let player_move: Option<Move> = game_chars.last().and_then(player_key_to_move);
-    let opponent_move: Option<Move> = game_chars.first().and_then(opponent_key_to_move);
+trait Transposable<R> {
+    fn transpose(self) -> R;
+}
 
-    match (&player_move, &opponent_move) {
-        (Some(player), Some(opponent)) => player.score_against(opponent),
-        _ => 0,
+impl<T, U> Transposable<Option<(T, U)>> for (Option<T>, Option<U>) {
+    fn transpose(self) -> Option<(T, U)> {
+        match self {
+            (Some(first), Some(second)) => Some((first, second)),
+            _ => None,
+        }
     }
 }
 
@@ -89,7 +91,20 @@ pub(super) fn get_total_score_after_rps_games(input_file: &str) -> io::Result<u3
     let file = File::open(input_path)?;
     let buf = BufReader::new(file);
 
-    buf.lines().map(|l| l.map(|s| calculate_score(&s))).sum()
+    buf.lines()
+        .map(|r| r.map(|s| s.chars().collect::<Vec<char>>()))
+        .map(|r| {
+            r.map(|game_chars| {
+                (
+                    game_chars.last().and_then(player_key_to_move),
+                    game_chars.first().and_then(opponent_key_to_move),
+                )
+            })
+        })
+        .map(|r| r.map(|moves| moves.transpose()))
+        .map(|r| r.map(|moves| moves.map(|(player, opponent)| player.score_against(&opponent))))
+        .map(|r| r.map(|score| score.unwrap_or_default()))
+        .sum()
 }
 
 #[cfg(test)]
