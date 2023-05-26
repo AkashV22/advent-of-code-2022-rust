@@ -2,6 +2,7 @@ use std::error::Error;
 
 mod day01;
 mod day02;
+mod shared;
 
 fn main() -> Result<(), Box<dyn Error>> {
     println!(

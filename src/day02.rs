@@ -1,9 +1,5 @@
-use std::{
-    fs::File,
-    io,
-    io::{BufRead, BufReader},
-    path::PathBuf,
-};
+use crate::shared::InputLoader;
+use std::io;
 
 enum GameResult {
     Win,
@@ -84,14 +80,8 @@ impl<T, U> Transposable<Option<(T, U)>> for (Option<T>, Option<U>) {
 
 /// Puzzle 1
 pub(super) fn get_total_score_after_rps_games(input_file: &str) -> io::Result<u32> {
-    let input_path: PathBuf = [env!("CARGO_MANIFEST_DIR"), "input", input_file]
-        .iter()
-        .collect();
-
-    let file = File::open(input_path)?;
-    let buf = BufReader::new(file);
-
-    buf.lines()
+    input_file
+        .load_input_to_lines()?
         .map(|r| r.map(|s| s.chars().collect::<Vec<char>>()))
         .map(|r| {
             r.map(|game_chars| {

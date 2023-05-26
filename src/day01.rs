@@ -1,24 +1,13 @@
-use std::{
-    error::Error,
-    fs::File,
-    io::{BufRead, BufReader},
-    path::PathBuf,
-};
+use crate::shared::InputLoader;
+use std::error::Error;
 
 fn get_total_calories_for_elves_with_most_calories(
     input_file: &str,
     limit: usize,
 ) -> Result<u32, Box<dyn Error>> {
-    let input_path: PathBuf = [env!("CARGO_MANIFEST_DIR"), "input", input_file]
-        .iter()
-        .collect();
-
-    let file = File::open(input_path)?;
-    let buf = BufReader::new(file);
-
     let mut calories_for_current_elf: u32 = 0;
     let mut calories_for_all_elves: Vec<u32> = vec![];
-    for line in buf.lines() {
+    for line in input_file.load_input_to_lines()? {
         let calories_str: &str = &line?;
         if !calories_str.is_empty() {
             calories_for_current_elf += calories_str.parse::<u32>()?;
