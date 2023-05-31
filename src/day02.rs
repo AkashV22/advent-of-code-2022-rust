@@ -24,7 +24,25 @@ enum Move {
 }
 
 impl Move {
-    fn score_against(&self, opponent: &Move) -> u32 {
+    fn from_player_key(key: &char) -> Option<Self> {
+        match key {
+            'X' => Some(Self::Rock),
+            'Y' => Some(Self::Paper),
+            'Z' => Some(Self::Scissors),
+            _ => None,
+        }
+    }
+
+    fn from_opponent_key(key: &char) -> Option<Self> {
+        match key {
+            'A' => Some(Self::Rock),
+            'B' => Some(Self::Paper),
+            'C' => Some(Self::Scissors),
+            _ => None,
+        }
+    }
+
+    fn score_against(&self, opponent: &Self) -> u32 {
         let base_score: u32 = match self {
             Self::Rock => 1,
             Self::Paper => 2,
@@ -47,24 +65,6 @@ impl Move {
     }
 }
 
-fn player_key_to_move(key: &char) -> Option<Move> {
-    match key {
-        'X' => Some(Move::Rock),
-        'Y' => Some(Move::Paper),
-        'Z' => Some(Move::Scissors),
-        _ => None,
-    }
-}
-
-fn opponent_key_to_move(key: &char) -> Option<Move> {
-    match key {
-        'A' => Some(Move::Rock),
-        'B' => Some(Move::Paper),
-        'C' => Some(Move::Scissors),
-        _ => None,
-    }
-}
-
 trait Transposable<R> {
     fn transpose(self) -> R;
 }
@@ -79,15 +79,17 @@ impl<T, U> Transposable<Option<(T, U)>> for (Option<T>, Option<U>) {
 }
 
 /// Puzzle 1
-pub(super) fn get_total_score_after_rps_games(input_file: &str) -> io::Result<u32> {
+pub(super) fn get_total_score_after_rps_games_with_player_moves(
+    input_file: &str,
+) -> io::Result<u32> {
     input_file
         .load_input_to_lines()?
         .map(|r| r.map(|s| s.chars().collect::<Vec<char>>()))
         .map(|r| {
             r.map(|game_chars| {
                 (
-                    game_chars.last().and_then(player_key_to_move),
-                    game_chars.first().and_then(opponent_key_to_move),
+                    game_chars.last().and_then(Move::from_player_key),
+                    game_chars.first().and_then(Move::from_opponent_key),
                 )
             })
         })
@@ -102,10 +104,10 @@ mod tests {
     use super::*;
 
     #[test]
-    fn get_total_score_after_rps_games_using_example_input() {
+    fn get_total_score_after_rps_games_with_player_moves_using_example_input() {
         assert_eq!(
             Ok(15),
-            get_total_score_after_rps_games("day02-example-input.txt")
+            get_total_score_after_rps_games_with_player_moves("day02-example-input.txt")
                 .map_err(|e| format!("{:?}", e))
         );
     }

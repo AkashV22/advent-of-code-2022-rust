@@ -17,7 +17,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     println!(
         "Day 2 puzzle 1 result: {}",
-        day02::get_total_score_after_rps_games("day02-input.txt")?
+        day02::get_total_score_after_rps_games_with_player_moves("day02-input.txt")?
     );
 
     Ok(())
