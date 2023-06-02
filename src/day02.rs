@@ -1,4 +1,4 @@
-use crate::shared::InputLoader;
+use crate::shared::{InputLoader, Transposable};
 use std::io;
 
 enum GameResult {
@@ -84,19 +84,6 @@ impl Move {
         };
 
         base_score + result.score()
-    }
-}
-
-trait Transposable<R> {
-    fn transpose(self) -> R;
-}
-
-impl<T, U> Transposable<Option<(T, U)>> for (Option<T>, Option<U>) {
-    fn transpose(self) -> Option<(T, U)> {
-        match self {
-            (Some(first), Some(second)) => Some((first, second)),
-            _ => None,
-        }
     }
 }
 

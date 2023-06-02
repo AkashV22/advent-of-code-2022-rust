@@ -19,3 +19,16 @@ impl InputLoader for &str {
         Ok(buf.lines())
     }
 }
+
+pub(crate) trait Transposable<R> {
+    fn transpose(self) -> R;
+}
+
+impl<T, U> Transposable<Option<(T, U)>> for (Option<T>, Option<U>) {
+    fn transpose(self) -> Option<(T, U)> {
+        match self {
+            (Some(first), Some(second)) => Some((first, second)),
+            _ => None,
+        }
+    }
+}
