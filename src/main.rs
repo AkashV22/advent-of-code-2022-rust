@@ -2,6 +2,7 @@ use std::error::Error;
 
 mod day01;
 mod day02;
+mod day03;
 mod shared;
 
 fn main() -> Result<(), Box<dyn Error>> {
@@ -23,6 +24,11 @@ fn main() -> Result<(), Box<dyn Error>> {
     println!(
         "Day 2 puzzle 2 result: {}",
         day02::get_total_score_after_rps_games_with_player_results("day02-input.txt")?
+    );
+
+    println!(
+        "Day 3 puzzle 1 result: {}",
+        day03::get_sum_of_backpack_errors("day03-input.txt")?
     );
 
     Ok(())
