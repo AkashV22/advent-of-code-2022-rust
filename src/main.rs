@@ -28,7 +28,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     println!(
         "Day 3 puzzle 1 result: {}",
-        day03::get_sum_of_backpack_errors("day03-input.txt")?
+        day03::get_sum_of_misplaced_item_priorities_in_rucksacks("day03-input.txt")?
     );
 
     Ok(())
